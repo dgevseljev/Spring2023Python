@@ -13,8 +13,14 @@ def is_prime(n: int) -> bool:
     >>> is_prime(8)
     False
     """
-    # PUT YOUR CODE HERE
-    pass
+    if n == 1:
+        return False
+    isPrimeFlag = True
+    for i in range(2, int(n ** (0.5) + 1)):
+        if n % i == 0:
+            isPrimeFlag = False
+            break
+    return isPrimeFlag
 
 
 def gcd(a: int, b: int) -> int:
@@ -26,8 +32,20 @@ def gcd(a: int, b: int) -> int:
     >>> gcd(3, 7)
     1
     """
-    # PUT YOUR CODE HERE
-    pass
+    if a == 0 or b == 0:
+        return max(a, b)
+
+    maxElem = max(a, b)
+
+    minElem = min(a, b)
+
+    while maxElem % minElem != 0:
+        maxElem = maxElem % minElem
+
+        if maxElem < minElem:
+            maxElem, minElem = minElem, maxElem
+
+    return minElem
 
 
 def multiplicative_inverse(e: int, phi: int) -> int:
@@ -38,8 +56,22 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     >>> multiplicative_inverse(7, 40)
     23
     """
-    # PUT YOUR CODE HERE
-    pass
+    tableValues = [[phi, e, phi % e, phi // e, 0, 1]]
+    i = 0
+
+    while tableValues[i][2] != 0:
+        tableValues.append([tableValues[i][1], tableValues[i][2], tableValues[i][1] % tableValues[i][2],
+                            tableValues[i][1] // tableValues[i][2], 0, 0])
+        i += 1
+
+    n = len(tableValues)
+
+    tableValues[n - 1][4], tableValues[n - 1][5] = 0, 1
+
+    for i in range(n - 2, -1, -1):
+        tableValues[i][4], tableValues[i][5] = tableValues[i + 1][5], tableValues[i + 1][4] - tableValues[i + 1][5] * (
+                    tableValues[i][0] // tableValues[i][1])
+    return tableValues[0][5] % phi
 
 
 def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[int, int]]:
@@ -48,10 +80,10 @@ def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[in
     elif p == q:
         raise ValueError("p and q cannot be equal")
 
-    # n = pq
+    n = p * q
     # PUT YOUR CODE HERE
 
-    # phi = (p-1)(q-1)
+    phi = (p - 1) * (q - 1)
     # PUT YOUR CODE HERE
 
     # Choose an integer e such that e and phi(n) are coprime

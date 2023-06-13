@@ -14,8 +14,24 @@ def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
     >>> encrypt_caesar("")
     ''
     """
+    n = len(plaintext)
+    letterCodes = [ord(plaintext[i]) for i in range(n)]
     ciphertext = ""
-    # PUT YOUR CODE HERE
+    firstUpperCode = ord('A')
+    firstLowerCode = ord('a')
+    alphabetLength = 26
+
+    for i in range(n):
+
+        if plaintext[i].isalpha():
+            if plaintext[i].islower():
+                letterCodes[i] = (letterCodes[i] - firstLowerCode + shift) % alphabetLength + firstLowerCode
+            else:
+                letterCodes[i] = (letterCodes[i] - firstUpperCode + shift) % alphabetLength + firstUpperCode
+
+    for i in letterCodes:
+        ciphertext += chr(i)
+
     return ciphertext
 
 
@@ -33,7 +49,24 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     ''
     """
     plaintext = ""
-    # PUT YOUR CODE HERE
+    firstUpperCode = ord('A')
+
+    firstLowerCode = ord('a')
+    alphapbetLength = 26
+
+    n = len(ciphertext)
+    codes = [ord(ciphertext[i]) for i in range(n)]
+
+    for i in range(n):
+        if ciphertext[i].isalpha():
+            if ciphertext[i].islower():
+                codes[i] = (codes[i] - firstLowerCode - shift + alphapbetLength) % alphapbetLength + firstLowerCode
+            else:
+                codes[i] = (codes[i] - firstUpperCode - shift + alphapbetLength) % alphapbetLength + firstUpperCode
+
+    for i in codes:
+        plaintext += chr(i)
+        
     return plaintext
 
 
